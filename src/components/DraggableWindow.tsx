@@ -1,5 +1,5 @@
 import { useState, useRef, type ReactNode } from 'react';
-import { Rnd } from 'react-rnd';
+import { Rnd, type RndDragCallback, type RndResizeCallback } from 'react-rnd';
 
 interface DraggableWindowProps {
   children: ReactNode;
@@ -13,6 +13,8 @@ interface DraggableWindowProps {
   minHeight?: number;
   zIndex?: number;
   onClose?: () => void;
+  onDragStop?: RndDragCallback;
+  onResizeStop?: RndResizeCallback;
 }
 
 export function DraggableWindow({
@@ -27,6 +29,8 @@ export function DraggableWindow({
   minHeight = 300,
   zIndex = 100,
   onClose,
+  onDragStop,
+  onResizeStop,
 }: DraggableWindowProps) {
   const [isMaximized, setIsMaximized] = useState(false);
   const [prevState, setPrevState] = useState({ x: defaultX, y: defaultY, width: defaultWidth, height: defaultHeight });
@@ -73,6 +77,8 @@ export function DraggableWindow({
       disableDragging={isMaximized}
       className="shadow-2xl"
       style={{ zIndex }}
+      onDragStop={onDragStop}
+      onResizeStop={onResizeStop}
     >
       <div className="bg-bg-secondary border border-border rounded overflow-hidden flex flex-col h-full">
         {/* Window Title Bar - Drag Handle */}
